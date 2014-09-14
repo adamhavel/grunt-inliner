@@ -15,7 +15,7 @@ module.exports = function(grunt) {
        url = require('url'),
        filesize = require('filesize');
 
-   grunt.registerMultiTask('inliner', 'A no-nonsense style inliner that will take care of all relative paths and won\'t mess up your documents.', function() {
+   grunt.registerMultiTask('inliner', 'A no-nonsense style inliner that will take care of relative paths and won\'t mess up your documents.', function() {
 
       var options = this.options({
          rebase: true
