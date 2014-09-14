@@ -1,0 +1,54 @@
+{
+  "name": "grunt-raggedast",
+  "description": "A no-nonsense style inliner that will take care of all relative paths and won't mess up your documents.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/rizzenvrinn/grunt-inliner",
+  "author": {
+    "name": "Adam Havel",
+    "email": "havel.adam@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rizzenvrinn/grunt-inliner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rizzenvrinn/grunt-inliner/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/rizzenvrinn/grunt-inliner/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt": "~0.4.5"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin",
+    "typography",
+    "text",
+    "html",
+    "xml",
+    "dom",
+    "postprocess"
+  ],
+  "dependencies": {
+    "cheerio": "~0.17.0",
+    "filesize": "^2.0.3"
+  },
+  "files": [
+    "tasks/inliner.js"
+  ]
+}
