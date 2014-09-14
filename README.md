@@ -55,6 +55,7 @@ grunt.initConfig({
 
 ## Release History
 
+* 2014-08-14   v0.1.1   Skip entity decoding.
 * 2014-08-14   v0.1.0   Inliner released.
 
 ## Release History

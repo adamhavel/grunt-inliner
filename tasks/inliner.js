@@ -36,11 +36,11 @@ module.exports = function(grunt) {
            return grunt.file.read(filepath);
          });
 
-         var $ = cheerio.load(src[0]),
+         var $ = cheerio.load(src[0], {decodeEntities: false}),
              count = 0,
              size = 0;
 
-         $('link[rel="stylesheet"]').each(function() {
+         $(':not(noscript) link[rel="stylesheet"]').each(function() {
             var regex = /([,\s,:]url\(['"]?(?!data:))([^\)'"]+)(?=['"]?\))/gi,
                 href = $(this).attr('href'),
                 stylePath = path.resolve(baseDir, href);
