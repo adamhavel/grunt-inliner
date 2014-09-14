@@ -40,7 +40,7 @@ module.exports = function(grunt) {
              count = 0,
              size = 0;
 
-         $(':not(noscript) link[rel="stylesheet"]').each(function() {
+         $(':not(noscript) > link[rel="stylesheet"]').each(function() {
             var regex = /([,\s,:]url\(['"]?(?!data:))([^\)'"]+)(?=['"]?\))/gi,
                 href = $(this).attr('href'),
                 stylePath = path.resolve(baseDir, href);
