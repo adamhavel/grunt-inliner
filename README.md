@@ -5,7 +5,7 @@
 ## Overview
 
 While there are plenty inliners out there, each seems to have its own set of problems. Turning your documents
-into XHTML while stripping the doctype, inlining everything including images, or not taking into account that url() in stylesheets can contain data payload or absolute paths. This inliner does none of that — it simply inlines all the referenced stylesheets and by default fixes any relative path they may contain.
+into XHTML while stripping the doctype, inlining everything including images, or not taking into account that url() in stylesheets can contain data payload or absolute paths. This inliner does none of that — it simply inlines all the referenced stylesheets, including the remote ones if desired, and by default fixes any relative path they may contain.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -34,7 +34,11 @@ Default value: `true`
 
 Whether paths found in stylesheet should be rebased relative to a document or not.
 
+#### options.remote
+Type: `Boolean`
+Default value: `false`
 
+Should remote stylesheets be inlined?
 
 ### Usage Examples
 
@@ -42,7 +46,8 @@ Whether paths found in stylesheet should be rebased relative to a document or no
 grunt.initConfig({
    inliner: {
       options: {
-         rebase: false
+         rebase: false,
+         remote: true
       },
       files: [{
          expand: true,
@@ -55,6 +60,7 @@ grunt.initConfig({
 
 ## Release History
 
+* 2014-08-15   v0.2.0   Added option to inline remote stylesheets.
 * 2014-08-14   v0.1.2   Fixed link selector.
 * 2014-08-14   v0.1.1   Skip entity decoding.
 * 2014-08-14   v0.1.0   Inliner released.

@@ -1,6 +1,6 @@
 /*
  * grunt-raggedast
- * https://github.com/rizzenvrinn/grunt-raggedast
+ * https://github.com/adamhavel/grunt-raggedast
  *
  * Copyright (c) 2014 Adam Havel
  * Licensed under the MIT license.
@@ -32,15 +32,14 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     inliner: {
       default_options: {
-        options: {
-        },
         files: {
           'tmp/default_options.html' : ['test/fixtures/index.html']
         }
       },
       custom_options: {
         options: {
-          rebase: false
+          rebase: false,
+          remote: true
         },
         files: {
           'tmp/custom_options.html' : ['test/fixtures/index.html']
