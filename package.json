@@ -1,7 +1,7 @@
 {
   "name": "grunt-inliner",
   "description": "A no-nonsense style inliner that will take care of relative paths and won't mess up your documents.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/adamhavel/grunt-inliner",
   "author": {
     "name": "Adam Havel",
