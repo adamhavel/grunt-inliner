@@ -20,7 +20,9 @@ module.exports = function(grunt) {
 
       var options = this.options({
          rebase: true,
-         remote: false
+         remote: false,
+         css: true,
+         js: false
       });
 
       this.files.forEach(function(f) {
@@ -39,62 +41,113 @@ module.exports = function(grunt) {
          });
 
          var $ = cheerio.load(src[0], { decodeEntities: false }),
-             count = 0,
-             size = 0;
+             cssCount = 0,
+             jsCount = 0,
+             cssSize = 0,
+             jsSize = 0;
 
          function injectStyle(link, css) {
             link.replaceWith('<style>' + css + '</style>');
-            count++;
-            size += css.length;
+            cssCount++;
+            cssSize += css.length;
          }
 
-         $(':not(noscript) > link[rel="stylesheet"]').each(function() {
-            var regex = /([,\s,:]url\(['"]?(?!data:))([^\)'"]+)(?=['"]?\))/gi,
-                href = $(this).attr('href'),
-                stylePath = path.resolve(baseDir, href);
+         function injectScript(link, js) {
+            link.replaceWith('<script>' + js + '</script>');
+            jsCount++;
+            jsSize += js.length;
+         }
 
-            if (url.parse(href).hostname || /^\/\//.test(href)) {
+         if (options.css) {
+            $(':not(noscript) > link[rel="stylesheet"]').each(function() {
+               var regex = /([,\s,:]url\(['"]?(?!data:))([^\)'"]+)(?=['"]?\))/gi,
+                   href = $(this).attr('href'),
+                   stylePath = path.resolve(baseDir, href);
 
-               if (options.remote) {
-                  var xhr = new XMLHttpRequest();
-                  xhr.open('GET', href, false);
-                  xhr.send(null);
+               if (url.parse(href).hostname || /^\/\//.test(href)) {
 
-                  if (xhr.readyState === 4) {
-                     injectStyle($(this), xhr.responseText);
-                  }
-               } else {
-                  grunt.log.warn('Remote stylesheet "' + href + '" found. Skipping.');
-                  return;
-               }
+                  if (options.remote) {
+                     var xhr = new XMLHttpRequest();
+                     xhr.open('GET', href, false);
+                     xhr.send(null);
 
-            } else if (href) {
-
-               if (!grunt.file.exists(stylePath)) {
-                  grunt.log.warn('Stylesheet "' + href + '" not found.');
-                  return;
-               }
-
-               var css = grunt.file.read(stylePath);
-
-               if (options.rebase) {
-                  css = css.replace(regex, function(whole, front, href) {
-                     if (url.parse(href).hostname) {
-                        return whole;
+                     if (xhr.readyState === 4) {
+                        injectStyle($(this), xhr.responseText);
                      }
-                     return front + path.relative(baseDir, path.resolve(path.dirname(stylePath), href)).replace(/\\/g, '/');
-                  });
+                  } else {
+                     grunt.log.warn('Remote stylesheet "' + href + '" found. Skipping.');
+                     return;
+                  }
+
+               } else if (href) {
+
+                  if (!grunt.file.exists(stylePath)) {
+                     grunt.log.warn('Stylesheet "' + href + '" not found.');
+                     return;
+                  }
+
+                  var css = grunt.file.read(stylePath);
+
+                  if (options.rebase) {
+                     css = css.replace(regex, function(whole, front, href) {
+                        if (url.parse(href).hostname) {
+                           return whole;
+                        }
+                        return front + path.relative(baseDir, path.resolve(path.dirname(stylePath), href)).replace(/\\/g, '/');
+                     });
+                  }
+
+                  injectStyle($(this), css);
+
                }
 
-               injectStyle($(this), css);
+            });
+         }
 
-            }
+         if (options.js) {
+            $('head script[src]').each(function() {
+               var href = $(this).attr('src'),
+                   scriptPath = path.resolve(baseDir, href);
 
-         });
+               if (url.parse(href).hostname || /^\/\//.test(href)) {
 
-         if (count) {
+                  if (options.remote) {
+                     var xhr = new XMLHttpRequest();
+                     xhr.open('GET', href, false);
+                     xhr.send(null);
+
+                     if (xhr.readyState === 4) {
+                        injectScript($(this), xhr.responseText);
+                     }
+                  } else {
+                     grunt.log.warn('Remote script "' + href + '" found. Skipping.');
+                     return;
+                  }
+
+               } else if (href) {
+
+                  if (!grunt.file.exists(scriptPath)) {
+                     grunt.log.warn('Script "' + href + '" not found.');
+                     return;
+                  }
+
+                  var js = grunt.file.read(scriptPath);
+
+                  injectScript($(this), js);
+
+               }
+
+            });
+         }
+
+         if (jsCount || cssCount) {
             grunt.file.write(f.dest, $.html());
-            grunt.log.writeln(count + ' stylesheet' + (count > 1 ? 's' : '') + ' of size ' + filesize(size) + ' inlined into "' + f.dest + '".');
+            if (options.css) {
+               grunt.log.writeln(cssCount + ' stylesheet' + (cssCount > 1 ? 's' : '') + ' of size ' + filesize(cssSize) + ' inlined into "' + f.dest + '".');
+            }
+            if (options.js) {
+               grunt.log.writeln(jsCount + ' script' + (jsCount > 1 ? 's' : '') + ' of size ' + filesize(jsSize) + ' inlined into "' + f.dest + '".');
+            }
          }
 
       });

@@ -40,6 +40,18 @@ Default value: `false`
 
 Should remote stylesheets be inlined?
 
+#### options.css
+Type: `Boolean`
+Default value: `true`
+
+Should stylesheets be inlined?
+
+#### options.js
+Type: `Boolean`
+Default value: `false`
+
+Should scripts in head be inlined?
+
 ### Usage Examples
 
 ```js
@@ -47,7 +59,8 @@ grunt.initConfig({
    inliner: {
       options: {
          rebase: false,
-         remote: true
+         remote: true,
+         js: true
       },
       files: [{
          expand: true,
@@ -60,6 +73,7 @@ grunt.initConfig({
 
 ## Release History
 
+* 2014-08-15   v0.3.0   Added option to inline scripts.
 * 2014-08-15   v0.2.0   Added option to inline remote stylesheets.
 * 2014-08-14   v0.1.2   Fixed link selector.
 * 2014-08-14   v0.1.1   Skip entity decoding.
