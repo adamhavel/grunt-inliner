@@ -2,7 +2,7 @@
  * grunt-inliner
  * https://github.com/adamhavel/grunt-inliner
  *
- * Copyright (c) 2014 Adam Havel
+ * Copyright (c) 2015 Adam Havel
  * Licensed under the MIT license.
  */
 
@@ -22,7 +22,8 @@ module.exports = function(grunt) {
          rebase: true,
          remote: false,
          css: true,
-         js: false
+         js: false,
+         baseDir: null
       });
 
       this.files.forEach(function(f) {
@@ -60,9 +61,14 @@ module.exports = function(grunt) {
 
          if (options.css) {
             $(':not(noscript) > link[rel="stylesheet"]').each(function() {
-               var regex = /([,\s,:]url\(['"]?(?!data:))([^\)'"]+)(?=['"]?\))/gi,
-                   href = $(this).attr('href'),
-                   stylePath = path.resolve(baseDir, href);
+               var regex = /([,\s,:]url\(['"]?(?!data:))([^\)'"]+)(?=['"]?\))/gi;
+               var href = $(this).attr('href');
+
+               if (options.baseDir) {
+                  baseDir = path.resolve(options.baseDir);
+               }
+
+               var stylePath = path.resolve(baseDir, href);
 
                if (url.parse(href).hostname || /^\/\//.test(href)) {
 
@@ -106,8 +112,15 @@ module.exports = function(grunt) {
 
          if (options.js) {
             $('head script[src]').each(function() {
-               var href = $(this).attr('src'),
-                   scriptPath = path.resolve(baseDir, href);
+               var href = $(this).attr('src');
+
+               if (options.baseDir) {
+                  baseDir = path.resolve(options.baseDir);
+               }
+
+               var stylePath = path.resolve(baseDir, href);
+
+               var scriptPath = path.resolve(baseDir, href);
 
                if (url.parse(href).hostname || /^\/\//.test(href)) {
 

@@ -52,6 +52,12 @@ Default value: `false`
 
 Should scripts in head be inlined?
 
+#### options.baseDir
+Type: `String`
+Default value: `null`
+
+Specify if the base directory differs from the location of the targeted static HTML files or templates.
+
 ### Usage Examples
 
 ```js
@@ -73,6 +79,7 @@ grunt.initConfig({
 
 ## Release History
 
+* 2014-06-05   v0.4.0   Added option to define base directory.
 * 2014-08-15   v0.3.0   Added option to inline scripts.
 * 2014-08-15   v0.2.0   Added option to inline remote stylesheets.
 * 2014-08-14   v0.1.2   Fixed link selector.
